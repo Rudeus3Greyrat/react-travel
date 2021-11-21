@@ -1,55 +1,21 @@
 import React from 'react';
 import styles from './App.module.css';
-import {Col, Layout, Row, Typography} from "antd";
-import {Header,Footer, SideMenu, Carousel, ProductCollection, BusinessPartners} from "./components";
-import {productList1,productList2,productList3} from './mockups';
-import sideImage from '../src/assets/images/sider_2019_02-04-2.png';
-import sideImage2 from '../src/assets/images/sider_2019_02-04.png';
-import sideImage3 from '../src/assets/images/sider_2019_12-09.png';
+import {HomePage, Register, SignIn, Detail} from "./pages";
+import {BrowserRouter as Router,Routes, Route, Navigate} from 'react-router-dom'
 
 function App() {
   return (
     <div className={styles.App}>
-        <Header />
-        <div className={styles["page-content"]}>
-            <Row style={{marginTop:'18px'}}>
-                <Col span={6}>
-                    <SideMenu />
-                </Col>
-                <Col span={18}>
-                    <Carousel />
-                </Col>
-            </Row>
-            <ProductCollection
-                title={
-                    <Typography.Title level={3} type="warning">
-                        爆款推荐
-                    </Typography.Title>
-                }
-                sideImage={sideImage}
-                products={productList1}
-            />
-            <ProductCollection
-                title={
-                    <Typography.Title level={3} type="danger">
-                        新品上市
-                    </Typography.Title>
-                }
-                sideImage={sideImage2}
-                products={productList2}
-            />
-            <ProductCollection
-                title={
-                    <Typography.Title level={3} type="success">
-                        国内游推荐
-                    </Typography.Title>
-                }
-                sideImage={sideImage3}
-                products={productList3}
-            />
-        </div>
-        <BusinessPartners />
-        <Footer />
+      <Router>
+          <Routes>
+              <Route path={'/'} element={<Navigate to={'/home'}/>}/>
+              <Route path={'/home'} element={<HomePage/>}/>
+              <Route path={'/signIn'} element={<SignIn />} />
+              <Route path={'/register'} element={<Register />} />
+              <Route path={`/detail/:id`} element={<Detail />} />
+              <Route path={'*'} element={<h1>404</h1>} />
+          </Routes>
+      </Router>
     </div>
   );
 }

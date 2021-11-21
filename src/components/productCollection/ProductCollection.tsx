@@ -15,7 +15,7 @@ export const ProductCollection: React.FC<PropsType> = ({title, sideImage, produc
           <Divider orientation={'left'}>{title}</Divider>
           <Row>
             <Col span={4}>
-              <img src={sideImage} className={styles['side-image']} />
+              <img src={sideImage} className={styles['side-image']} alt={'image'}/>
             </Col>
             <Col span={20}>
               <Row>
