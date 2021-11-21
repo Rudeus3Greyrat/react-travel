@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./Header.module.css";
 import {Button, Input, Layout, Menu, Typography} from "antd";
 import DropdownButton from "antd/es/dropdown/dropdown-button";
@@ -6,9 +6,16 @@ import {GlobalOutlined} from "@ant-design/icons";
 import ButtonGroup from "antd/es/button/button-group";
 import logo from "../../assets/logo.svg";
 import {useNavigate} from "react-router-dom";
+import {store} from "../../redux/store";
+import {changeLanguage, setLanguage} from "../../redux/language/languageActions";
 
 export const Header:React.FC=(props)=>{
     const navigate=useNavigate()
+    const languageStoreState=store.getState()
+    const [languageState,setLanguageState]=useState(languageStoreState)
+    store.subscribe(()=>{
+        setLanguageState(store.getState())
+    })
     return (
         <div className={styles['app-header']}>
             <div className={styles['top-header']}>
@@ -16,11 +23,13 @@ export const Header:React.FC=(props)=>{
                     <Typography.Text>让旅游更幸福</Typography.Text>
                     <DropdownButton style={{marginLeft:'15px'}} icon={<GlobalOutlined />} overlay={
                         <Menu>
-                            <Menu.Item>中文</Menu.Item>
-                            <Menu.Item>English</Menu.Item>
+                            {
+                                languageState.languageList.map(lang=><Menu.Item key={lang.code} onClick={()=>store.dispatch(changeLanguage(lang.code))}>{lang.name}</Menu.Item>)
+                            }
+                            <Menu.Item key={Date.now()} onClick={()=>store.dispatch(setLanguage({name:'日文',code:'jp'}))}>添加语言</Menu.Item>
                         </Menu>
                     }>
-                        语言
+                        {languageState.language==='zh'?'中文':'英文'}
                     </DropdownButton>
                     <ButtonGroup className={styles['button-group']}>
                         <Button onClick={()=>navigate('/signIn')}>登录</Button>
