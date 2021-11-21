@@ -8,14 +8,13 @@ import logo from "../../assets/logo.svg";
 import {useNavigate} from "react-router-dom";
 import {store} from "../../redux/store";
 import {changeLanguage, setLanguage} from "../../redux/language/languageActions";
+import {useDispatch, useSelector} from "react-redux";
+import {languageState} from "../../redux/language/languageReducer";
 
 export const Header:React.FC=(props)=>{
     const navigate=useNavigate()
-    const languageStoreState=store.getState()
-    const [languageState,setLanguageState]=useState(languageStoreState)
-    store.subscribe(()=>{
-        setLanguageState(store.getState())
-    })
+    const languageState=useSelector<languageState,languageState>(state=>state)
+    const dispatch=useDispatch()
     return (
         <div className={styles['app-header']}>
             <div className={styles['top-header']}>
@@ -24,9 +23,9 @@ export const Header:React.FC=(props)=>{
                     <DropdownButton style={{marginLeft:'15px'}} icon={<GlobalOutlined />} overlay={
                         <Menu>
                             {
-                                languageState.languageList.map(lang=><Menu.Item key={lang.code} onClick={()=>store.dispatch(changeLanguage(lang.code))}>{lang.name}</Menu.Item>)
+                                languageState.languageList.map(lang=><Menu.Item key={lang.code} onClick={()=>dispatch(changeLanguage(lang.code))}>{lang.name}</Menu.Item>)
                             }
-                            <Menu.Item key={Date.now()} onClick={()=>store.dispatch(setLanguage({name:'日文',code:'jp'}))}>添加语言</Menu.Item>
+                            <Menu.Item key={Date.now()} onClick={()=>dispatch(setLanguage({name:'日文',code:'jp'}))}>添加语言</Menu.Item>
                         </Menu>
                     }>
                         {languageState.language==='zh'?'中文':'英文'}

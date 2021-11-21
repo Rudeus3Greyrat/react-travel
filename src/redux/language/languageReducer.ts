@@ -1,6 +1,6 @@
 import {languageAction} from "./languageActions";
 
-interface languageState{
+export interface languageState{
     language:string,
     languageList:{name:string,code:string}[]
 }
